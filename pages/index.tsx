@@ -34,14 +34,14 @@ const Home: NextPage = () => {
       const rr = web3.eth.accounts.wallet.add(privateKey);
       const res = await wiiqarecontract.methods
         .mintVoucher([
-          101,
+          20,
           "USD",
-          "wiiqareDemo",
-          "hospitalA",
+          "demoWii",
+          "hospitalWii",
           "pacientDemo",
           "notClaimed",
         ])
-        .send({ from: web3Account.address, gasPrice: '30000000000', gas: '9996000'});
+        .send({ from: web3Account.address, gasPrice: '30000000000', gas: '3996000'});
       console.log(res);
     } catch (err) {
       console.error("Contract call failure", err);
@@ -52,9 +52,28 @@ const Home: NextPage = () => {
     try {
       const accounts = await web3.eth.getAccounts();
       const res = await wiiqarecontract.methods
-        .vouchers(4)
+        .vouchers(10)
         .call({ from: web3Account.address});
       setVoucher(res);
+    } catch (err) {
+      console.error("Contract call failure", err);
+    }
+  };
+
+  const alterVoucher = async () => {
+    try {
+      const signResponse = web3.eth.accounts.wallet.add(privateKey);
+      const res = await wiiqarecontract.methods
+        .alterVoucher(10, [
+          1000,
+          "RON",
+          "demoWiiAlter",
+          "hospitalWii",
+          "pacientDemo",
+          "notClaimed",
+        ])
+        .send({ from: web3Account.address, gasPrice: '30000000000', gas: '3996000'});
+      console.log(res);
     } catch (err) {
       console.error("Contract call failure", err);
     }
@@ -82,6 +101,7 @@ const Home: NextPage = () => {
       <div>
         <button onClick={mintVoucher}>Mint voucher</button>
         <button onClick={getVoucher}>Get voucher voucher</button>
+        <button onClick={alterVoucher}>Alter voucher</button>
       </div>
     );
   }
