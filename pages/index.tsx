@@ -16,21 +16,9 @@ const Home: NextPage = () => {
   );
   const web3Account = web3.eth.accounts.privateKeyToAccount(privateKey);
 
-  const getGasFees = async () => {
-    return (await fetch("https://gasstation-mumbai.matic.today/v2")).json();
-  };
 
   const mintVoucher = async () => {
     try {
-       const gasParams = await getGasFees();
-      // const resSigned = await web3.eth.accounts.signTransaction(
-      //   {
-      //     to: "0xd55Fc611D64f10885f243dbAcA1757349FcE2Bc7",
-      //     gas: web3.utils.toWei(gasParams.standard.maxFee.toString()).toString(),
-      //   },
-      //   privateKey
-      // );
-      //const accounts = await web3.eth.getAccounts();
       const rr = web3.eth.accounts.wallet.add(privateKey);
       const res = await wiiqarecontract.methods
         .mintVoucher([
@@ -52,7 +40,7 @@ const Home: NextPage = () => {
     try {
       const accounts = await web3.eth.getAccounts();
       const res = await wiiqarecontract.methods
-        .vouchers(10)
+        .vouchers(167)
         .call({ from: web3Account.address});
       setVoucher(res);
     } catch (err) {
